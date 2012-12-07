@@ -252,7 +252,7 @@ ACCOUNT_ACTIVATION_DAYS = 7 #used by registration
 try:
     LOGGING_DIR
 except NameError:
-    LOGGING_DIR = '/var/log/django/'
+    LOGGING_DIR = 'django-logs'
 
 LOGGING = {
     'version': 1,
