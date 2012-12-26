@@ -175,6 +175,7 @@ INSTALLED_APPS = (
                       'django.contrib.sites',
                       'django.contrib.messages',
                       'django.contrib.staticfiles',
+                      'django.contrib.humanize',
                       # Uncomment the next line to enable the admin:
                       'django.contrib.admin',
                       # Uncomment the next line to enable admin documentation:
@@ -398,3 +399,10 @@ COVERAGE_MODULE_EXCLUDES = ['tests$', 'settings$', 'urls$', 'locale$',
                             'migrations', 'south', 'djcelery']
 COVERAGE_REPORT_HTML_OUTPUT_DIR = './coverage-report/'
 COVERAGE_CUSTOM_REPORTS = False
+
+# Automated grader for CS145
+try:
+    DB_GRADER_LOADBAL
+except:
+    DB_GRADER_LOADBAL='grade.prod.c2gops.com'
+

@@ -35,13 +35,13 @@ def add(request):
         section = ContentSection.objects.get(id=request.POST.get("section_id"))
 
     parent_type,parent_id = None,None
-    if request.POST.get("parent_id") != "":
+    parent_type = request.POST.get('parent_id')
+    if parent_type and parent_type[:4] != 'none':
         parent_type,parent_id = request.POST.get("parent_id").split(',')
-        if parent_type == 'none':
-            parent_type, parent_id = None,None
-        else:
-            parent_id = int(parent_id)
-    
+        parent_id = long(parent_id)
+    else:
+        parent_type, parent_id = None,None
+
     if request.POST.get("menu_slug") != "":
         index = len(AdditionalPage.objects.filter(course=common_page_data['course'],menu_slug=request.POST.get("menu_slug")))
     else:
@@ -67,10 +67,9 @@ def add(request):
     draft_page.create_ready_instance()
     if parent_type != None and parent_type != "none":
         parent_ref = AdditionalPage.objects.get(id=parent_id).image
-        #print "DEBUG: creating parent/child relationship between", parent_ref.id, "and", draft_page.image.id
-        # XXX: We assume that the parent is an AdditionalPage regardless of parent_type; this is by the spec, but against my nature
+        # FIXME: We assume that the parent is an AdditionalPage regardless of parent_type; this is by the spec, but against my nature
         content_group_groupid = ContentGroup.add_parent(parent_ref.course, parent_type, parent_ref)
-        ContentGroupGroupFactory.add_child(content_group_groupid, 'additional_page', draft_page.image)
+        ContentGroup.add_child(content_group_groupid, 'additional_page', draft_page.image, display_style="button")
     
     if request.POST.get("menu_slug") == "":
         return redirect('courses.views.course_materials', course_prefix, course_suffix)

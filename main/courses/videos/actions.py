@@ -6,12 +6,12 @@ import re
 import urllib2, urllib, json
 
 from django.core.urlresolvers import reverse
-from django.http import HttpResponse, Http404
+from django.http import HttpResponse, Http404, HttpResponseBadRequest
 from django.shortcuts import render, render_to_response, redirect, HttpResponseRedirect
 from django.template import RequestContext
 from django.views.decorators.http import require_POST
 
-from c2g.models import Video, VideoActivity, VideoDownload
+from c2g.models import Exam, Video, VideoActivity, VideoDownload
 from courses.actions import auth_is_course_admin_view_wrapper
 from courses.common_page_data import get_common_page_data
 from courses.videos.forms import *
@@ -60,10 +60,25 @@ def add_video(request):
 def edit_video(request, course_prefix, course_suffix, slug):
     common_page_data = request.common_page_data
     video = common_page_data['course'].video_set.all().get(slug=slug)
+    exam_id = request.POST.get("exam_id")
 
+    print '*** live_datetime is...'
+    print request.POST.get('live_datetime')
     action = request.POST['action']
     form = S3UploadForm(request.POST, request.FILES, course=common_page_data['course'], instance=video)
     if form.is_valid():
+        video.exam_id = exam_id 
+
+        if exam_id:
+            try:
+                exam = Exam.objects.get(id=exam_id)
+                exam.live_datetime = video.live_datetime
+                exam.save()
+                exam.image.live_datetime = video.live_datetime
+                exam.image.save()
+            except Exam.DoesNotExist:
+                raise Http404
+
         form.save()
         if action == "Save and Set as Ready":
             video.commit()
@@ -185,7 +200,7 @@ def oauth(request):
         video.image.save()
 
         parts = str(video.handle).split("--")
-        return HttpResponseRedirect(reverse('courses.videos.views.manage_exercises', args=(parts[0], parts[1], video.slug)))
+        return HttpResponseRedirect(reverse('courses.videos.views.list', args=(parts[0], parts[1])))
 
 
 def GetOAuth2Url(request, video):
@@ -202,6 +217,7 @@ def GetOAuth2Url(request, video):
 def upload(request):
     course_prefix = request.POST.get("course_prefix")
     course_suffix = request.POST.get("course_suffix")
+    exam_id = request.POST.get("exam_id",'')
     common_page_data = get_common_page_data(request, course_prefix, course_suffix)
 
     data = {'common_page_data': common_page_data}
@@ -209,6 +225,7 @@ def upload(request):
     if request.method == 'POST':
         request.session['video_privacy'] = request.POST.get("video_privacy")
 
+    
         # Need partial instance with course for form slug validation
         new_video = Video(course=common_page_data['course'])
         form = S3UploadForm(request.POST, request.FILES, course=common_page_data['course'], instance=new_video)
@@ -217,16 +234,33 @@ def upload(request):
             new_video.mode = 'draft'
             new_video.handle = course_prefix + "--" + course_suffix
 
+            if exam_id:
+                try:
+                    exam = Exam.objects.get(id=exam_id)
+                except Exam.DoesNotExist:
+                    return HttpResponseBadRequest("The exam you wanted to link to this video was not found!")
+                new_video.exam = exam
+            
+                exam.live_datetime = new_video.live_datetime
+                exam.save()
+                if exam.image:
+                    exam.image.live_datetime = new_video.live_datetime
+                    exam.image.save()
+
+        
+        
             # Bit of jiggery pokery to so that the id is set when the upload_path function is called.
             # Now storing file with id appended to the file path so that thumbnail and associated manifest files
             # are easily associated with the video by putting them all in the same directory.
             new_video.file = None
             new_video.save()
             new_video.file = form.cleaned_data['file']
-
             new_video.save()
             new_video.create_ready_instance()
             #print new_video.file.url
+
+            
+            
 
             # kick off remote jobs
             kelvinator.tasks.kelvinate.delay(new_video.file.name)

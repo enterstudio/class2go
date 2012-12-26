@@ -19,6 +19,7 @@ var c2gXMLParse = (function() {
         renderPreview: function() {
             $('#staging-area').empty();
             $('#staging-area').append(editor.getValue());
+            MathJax.Hub.Queue(["Typeset",MathJax.Hub,"staging-area"]);
         },
 
         renderMarkup: function(sourceEl, targetEl) {
@@ -41,8 +42,77 @@ var c2gXMLParse = (function() {
                 console.log(e.message);
                 return;
             }
+             
+            var setValIfDef = function (elem, val) {
+                if (typeof val !== "undefined")
+                   $(elem).val(val);
+            };
+                
+            //This parses the "metadata" for the problem set.  title, description, etc.
+            var parsePsetFields = function() {
+                var psetDOM = $(myDOM).find('problemset');
+                 
+                if (psetDOM.length) {
+                   
+                   setValIfDef($('input#exam_title'), $(psetDOM).attr('title'));
+                   setValIfDef($('input#exam_slug'), $(psetDOM).attr('url-identifier'));
+                   setValIfDef($('select#assessment_type'), $(psetDOM).attr('type'));
+                   
+                   var descDOM = $(psetDOM).find('description');
+                   var datesDOM = $(psetDOM).find('dates');
+                   var gradingDOM = $(psetDOM).find('grading');
+                   var sectionDOM = $(psetDOM).find('section');
+                   
+                   if (descDOM.length) {
+                       $('textarea#description').val($(descDOM).text());
+                   }
+                   
+                   if (datesDOM.length) {
+                       setValIfDef($('input#due_date'), $(datesDOM).attr('due-date'));
+                       setValIfDef($('input#grace_period'), $(datesDOM).attr('grace-period'));
+                       setValIfDef($('input#hard_deadline'), $(datesDOM).attr('hard-deadline'));
+                   }
+                   
+                   if (gradingDOM.length) {
+                       setValIfDef($('input#late_penalty'), $(gradingDOM).attr('late-penalty'));
+                       setValIfDef($('input#num_subs_permitted'), $(gradingDOM).attr('num-submissions'));
+                       setValIfDef($('input#resubmission_penalty'), $(gradingDOM).attr('resubmission-penalty'));
+    
+                   }
+                   if (sectionDOM.length) {
+                       $('select#id_section option').each(function() {
+                          //Go through each option to see if any of their text is the same as the XML
+                          //select if that's the case
+                           if ($(this).text() && $(sectionDOM).attr('section') &&  $(this).text().trim() == $(sectionDOM).attr('section').trim()) {
+                              setValIfDef($('select#id_section'), $(this).val());
+                              prefill_children($('#parent_id')[0]).success(prepop_children);
+                           }
+                       });
+
+                   }
+                }
+            };
+                   
+            var prepop_children = function () {
+                var psetDOM = $(myDOM).find('problemset');
+                if (psetDOM.length) {
+                    var sectionDOM = $(psetDOM).find('section');
+                    if (sectionDOM.length) {
+                        $('select#parent_id option').each(function() {
+                              //Go through each option to see if any of their text is the same as the XML
+                              //select if that's the case
+                              if ($(this).text() && $(sectionDOM).attr('parent') && $(this).text().trim() == $(sectionDOM).attr('parent').trim())
+                                    setValIfDef($('select#parent_id'), $(this).val());
+                        });
+                    }
+                }
+            };
+                   
+            parsePsetFields();
 
             var problemNodes = $(myDOM).find('problem');
+
+            var videoNodes = $(myDOM).find('video');
 
             //Helper function
             var isChoiceCorrect = function(choiceElem) {
@@ -57,6 +127,10 @@ var c2gXMLParse = (function() {
             var outerMetadataObj = document.createElement('metadata'); //outermost metadata--won't actually be displayed since we use $.html()
             var metadataObj = document.createElement('exam_metadata');
             $(outerMetadataObj).append($(metadataObj));
+            
+            // Add video metadata (problem:time mappings for in-video exams)
+            $(metadataObj).append($(videoNodes));
+
             //Build up a DOM object corresponding to the answer key
             var answerkeyObj = document.createElement('answerkey');
             problemNodes.each(function () {
@@ -64,7 +138,7 @@ var c2gXMLParse = (function() {
                 questionIdx += 1;
                 var questionMeta=document.createElement('question_metadata');
                 $(questionMeta).attr('id', 'problem_'+questionIdx);
-                $(questionMeta).attr('data-tag4humans', $(this).attr('tag4humans'));
+                $(questionMeta).attr('data-report', $(this).attr('data-report'));
                 $(metadataObj).append($(questionMeta));
                 
                               
@@ -81,7 +155,7 @@ var c2gXMLParse = (function() {
                 var tmpProbDiv = document.createElement('div');
                 $(tmpProbDiv).addClass('question');
                 $(tmpProbDiv).attr('id', 'problem_'+questionIdx);
-                $(tmpProbDiv).attr('data-tag4humans', $(this).attr('tag4humans'));
+                $(tmpProbDiv).attr('data-report', $(this).attr('data-report'));
                               
                 //$('#staging-area').append($(tmpProbDiv));
                 $(targetEl).append($(tmpProbDiv));
@@ -109,11 +183,18 @@ var c2gXMLParse = (function() {
                             var questionObj = document.createElement('response');
                             $(questionObj).attr('name', probName);
                             $(questionObj).attr('answertype',nodeName);
-                            $(questionObj).attr('data-tag4humans',$(node).attr('tag4humans'));
+                            $(questionObj).attr('data-report',$(node).attr('data-report'));
+
+                            if ($(node).attr('correct-points') != undefined) {
+                              $(questionObj).attr('correct-points',$(node).attr('correct-points'));
+                            }
+                            if ($(node).attr('wrong-points') != undefined) {
+                              $(questionObj).attr('wrong-points',$(node).attr('wrong-points'));
+                            }
                             $(questionMeta).append($(questionObj));
                               
                             var fieldsetObj = document.createElement('fieldset');
-                            $(fieldsetObj).attr('data-tag4humans',$(node).attr('tag4humans'));
+                            $(fieldsetObj).attr('data-report',$(node).attr('data-report'));
 
                             $(nodeParent).append($(fieldsetObj));
                               
@@ -125,7 +206,7 @@ var c2gXMLParse = (function() {
                                 var choiceObj = document.createElement('choice');
                                 //$(choiceObj).attr('id',choiceID);
                                 $(choiceObj).attr('value',$(this).attr('name'));
-                                $(choiceObj).attr('data-tag4humans', $(this).attr('tag4humans'));
+                                $(choiceObj).attr('data-report', $(this).attr('data-report'));
                                 $(questionObj).append($(choiceObj));
                                 var explanationObj = document.createElement('explanation');
                                 $(explanationObj).append($(this).find('explanation').text());
@@ -143,7 +224,7 @@ var c2gXMLParse = (function() {
                                 var tmpLabel = document.createElement('label');
                                             
                                 $(tmpLabel).attr('for', choiceID);
-                                $(tmpInput).attr('data-tag4humans', $(this).attr('tag4humans'));
+                                $(tmpInput).attr('data-report', $(this).attr('data-report'));
                                 $(tmpInput).attr('type', inputtype);
                                 $(tmpInput).attr('id', choiceID);
 
@@ -169,7 +250,15 @@ var c2gXMLParse = (function() {
                               $(questionObj).attr('name', probName);
                               $(questionObj).attr('answertype', nodeName);
                               $(questionObj).attr('answer',$(node).attr('answer'));
-                              $(questionObj).attr('data-tag4humans', $(node).attr('tag4humans'));
+                              $(questionObj).attr('data-report', $(node).attr('data-report'));
+                              
+                              if ($(node).attr('correct-points') != undefined) {
+                                  $(questionObj).attr('correct-points',$(node).attr('correct-points'));
+                              }
+                              if ($(node).attr('wrong-points') != undefined) {
+                                  $(questionObj).attr('wrong-points',$(node).attr('wrong-points'));
+                              }
+
                               $(questionObj).append($(node).find('responseparam'));
                               $(questionMeta).append($(questionObj));
                             }
@@ -180,7 +269,7 @@ var c2gXMLParse = (function() {
                             $(tmpInput).attr('type', 'text');
                             $(tmpInput).attr('id', probName);
                             $(tmpInput).attr('name', probName);
-                            $(tmpInput).attr('data-tag4humans', $(node).attr('tag4humans'));
+                            $(tmpInput).attr('data-report', $(node).attr('data-report'));
                     
                             var textInputSize = (false) ? '' : 20;
                             $(tmpInput).attr('size', textInputSize);

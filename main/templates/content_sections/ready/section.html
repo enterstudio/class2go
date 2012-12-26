@@ -8,9 +8,13 @@
         {% ifequal item.type 'additional_page' %}
             {% include "additional_pages/ready/additional_page_list_item.html" %}
         {% endifequal %}
+
+        {% comment %}
         {% ifequal item.type 'problem_set' %}
             {% include "problemsets/ready/problemset_list_item.html" %}
         {% endifequal %}
+        {% endcomment %}
+
         {% ifequal item.type 'video' %}
             {% include "videos/ready/video_list_item.html" %}
         {% endifequal %}
@@ -20,6 +24,8 @@
         {% ifequal item.type 'exam' %}
             {% include "exams/ready/exam_list_item.html" %}
         {% endifequal %}
+
+        {% include "content_groups/display.html" %}
     </li>
 {% empty %}
     <li class="course-list-item {{ stripecolor }}">
