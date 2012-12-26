@@ -216,7 +216,7 @@ body.home {
     background:url(/static/graphics/core/bg-hero-header.jpg) no-repeat top center;
 }
 .home .hero-header .hero {
-    width:520px;
+    width:700px;
     margin-top: 55px;
     margin-bottom: 55px;
 }
@@ -287,6 +287,9 @@ body.home {
 .home h3 a {
     font-weight:300;
 }
+.home-primary {
+    margin-top: -20px;
+}
 .home-primary .span5 {
     padding-left:20px;
     border-left:1px solid #fbf7f4;
@@ -352,7 +355,7 @@ small.date {
     width:100%;
 }
 .stanford-logo {
-    background:transparent url(/static/graphics/core/header-stanford-logo.png) no-repeat 20px 14px;
+    background:transparent url(http://www.thoughtworks.com/sites/www.thoughtworks.com/files/corporate_logo.png) no-repeat 20px 6px;
     padding:13px 20px;
     width:198px;
     height:11px;

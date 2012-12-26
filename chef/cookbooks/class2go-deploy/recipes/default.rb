@@ -2,10 +2,6 @@
 # Cookbook Name:: class2go-deploy
 # Recipe:: default
 #
-# Copyright 2012, Stanford class2go
-#
-# All rights reserved - Do Not Redistribute
-#
 #
 node['apps'].keys.each do |app|
 
@@ -30,7 +26,7 @@ node['apps'].keys.each do |app|
         cwd node['system']['admin_home']
         code <<-EOH
         if [[ ! -d #{app} ]]; then
-            git clone https://github.com/Stanford-Online/class2go.git #{app}
+            git clone https://github.com/exceedhl/class2go.git #{app}
         fi
         EOH
     end

@@ -19,17 +19,15 @@
     {% endblock top_scripts %}
     {% block addl_stylesheets %}{% endblock addl_stylesheets %}
     {% block addl_head_scripts %}{% endblock addl_head_scripts %}
-    <title>{% block title %}Stanford Online{% endblock %}</title>
+    <title>{% block title %}Online Classroom{% endblock %}</title>
 </head>
 
 {% block bodytag %}<body>{% endblock bodytag %}
     <div id="viewport">
       {% if not request.session.headless %}
         <div id="global-header">
-            <h1 class="stanford-logo">
-                <a href="http://www.stanford.edu">Stanford University</a>
-            </h1>
-            <p id="skip-nav"><a href="#main-content" class="hidden-accessible">Jump to content</a></p>
+          <a class="stanford-logo" href="{% url 'courses.landing.views.landing' %}"></a>
+          <p id="skip-nav"><a href="#main-content" class="hidden-accessible">Jump to content</a></p>
         </div>
         {% block topcontent %}<div id="top-content"></div>{% endblock topcontent %}
       {% endif %}
@@ -59,7 +57,6 @@
             <div class="row-fluid" style="position:relative;">
             {% block page_title %}
             <div class="pull-left page-title">
-                <img src="{{ STATIC_URL }}graphics/core/top-banner-Stanford.png" alt="Stanford Online">
                 <h2>{% block course_page_title %}{{common_page_data.course.title}}{% endblock course_page_title %}</h2>
             </div>
             {% endblock page_title %}
@@ -134,7 +131,9 @@
         {% endblock content %}
         
     </div>
-    {% include "footer.html" %}
+    <br/>
+    <br/>
+    <!-- {% include "footer.html" %} -->
     {% if reenable_modal %}
     <!-- Commenting out the modal login per #447 for now
     <div id="login-modal" class="modal fade">
@@ -145,7 +144,7 @@
         <form action="{% url 'auth_login' %}" method="POST" class="form-horizontal">
         <div class="modal-body">
             <div class="alert alert-info">
-                <em class="icon-info-sign"></em>New to Stanford Online? <strong><a href="{% url 'registration_register' %}?pre={{common_page_data.course_prefix}}&post={{common_page_data.course_suffix}}">Register here</a></strong>.
+                <em class="icon-info-sign"></em>New to Online Classroom? <strong><a href="{% url 'registration_register' %}?pre={{common_page_data.course_prefix}}&post={{common_page_data.course_suffix}}">Register here</a></strong>.
             </div>
             <fieldset>
                 <div class="control-group">
