@@ -1,18 +1,18 @@
-file "/etc/hostname" do
-  content node.name+".c2gops.com"
-end
+# file "/etc/hostname" do
+#   content node.name+".c2gops.com"
+# end
 
 execute "start hostname" do
     user "root"
     action :run
 end
 
-template "/home/ubuntu/.bash_aliases" do
-    source "bash_aliases.erb"
-    owner "ubuntu"
-    group "ubuntu"
-    mode "0644"
-end
+# template "/home/#{node["system"]["admin_user"]}/.bash_aliases" do
+#     source "bash_aliases.erb"
+#     owner node["system"]["admin_user"]
+#     group node["system"]["admin_group"]
+#     mode "0644"
+# end
 
 package "git" do
     action :install
