@@ -46,6 +46,10 @@ easy_install_package "South" do
     action :install
 end
 
+package "ffmpeg" do
+  action :install
+end
+
 ## Imaging -- a bit tricky
 
 package "libjpeg-dev" do
