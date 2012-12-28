@@ -365,11 +365,10 @@ CELERY_IGNORE_RESULT = True   # SQS doesn't support, so this stop lots of spurri
 CELERYD_PREFETCH_MULTIPLIER = 1
 
 BROKER_TRANSPORT='sqs'
-BROKER_USER = AWS_ACCESS_KEY_ID
-BROKER_PASSWORD = AWS_SECRET_ACCESS_KEY
+BROKER_USER = SQS_AWS_ACCESS_KEY_ID
+BROKER_PASSWORD = SQS_AWS_SECRET_ACCESS_KEY
 BROKER_TRANSPORT_OPTIONS = {
-    'region': 'us-west-2', 
-    'queue_name_prefix' : INSTANCE+'-',
+    'region': 'us-east-2', 
     'visibility_timeout' : 3600*6,
 }
 
