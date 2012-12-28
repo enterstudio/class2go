@@ -6,6 +6,11 @@ if [ ! "$username" = "root" ]; then
 	exit 1
 fi
 
+if which chef-solo; then
+  echo "chef already installed."
+  exit 0
+fi
+
 echo "deb http://apt.opscode.com/ `lsb_release -cs`-0.10 main" | tee /etc/apt/sources.list.d/opscode.list
 
 mkdir -p /etc/apt/trusted.gpg.d

@@ -6,79 +6,11 @@ Vagrant::Config.run do |config|
   config.vm.define :u2 do |config|
     config.vm.box = "ubuntu64"
     config.vm.network :hostonly, "10.33.33.33"
-    config.vm.provision :shell, :path => "install_db.sh"
   end
 
   config.vm.define :u1 do |config|
     config.vm.box = "ubuntu64"
     config.vm.network :hostonly, "10.33.33.34"
     config.vm.forward_port 80, 8888
-
-    config.vm.provision :shell, :path => "install_chef.sh"
-    
-    config.vm.provision :chef_solo do |chef|
-      chef.cookbooks_path = "../chef/cookbooks"
-      chef.roles_path = "../chef/roles"
-      chef.add_role("custom")
-      chef.json = {
-        "system" => {
-          "admin_user" =>  "vagrant",
-          "admin_group" => "admin",
-          "admin_home" =>  "/home/vagrant"
-        },
-        "aws" => {
-          # AWS GLOBAL
-          "access_key" => "aaaaaaaaaaaaaaaaaaaa",
-          "access_secret" => "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
-          # RDS
-          "database_host" => "10.33.33.33",
-          "database_instance" => "class2go",
-          "database_user" => "class2go",
-          "database_password" => "class2gopw",
-          # S3
-          "storage_bucket" => "stage-c2g",
-          # SES
-          "smtp_user" => "eeeeeeeeeeeeeeeeeeee",
-          "smtp_password" => "ffffffffffffffffffffffffffffffffffffffffffff"
-        },
-        "main" => {
-          "production" => "False",
-          "instance" => "stage",
-          "maint" => "False",
-          "admin_name" => "Class2Go Example",
-          "admin_email" => "crash@class.stanford.edu",
-          "snippet_email" => "c2g-dev@cs.stanford.edu",
-          "django_secret" => "class2go"
-        },
-        "apps" => {
-          "class2go" => {
-            "servername" => "https://example.class.university.edu",
-            "serveralias" => "*.example.class.university.edu",
-            "git_branch" => "origin/master"
-          }
-        },
-        "util" => {
-          "celery_database" => "/opt/class2go/celery/celerydb.sqlite",
-          "celery_timeout" => "7200",
-          "celery_concurrency" => "8"
-        },
-        "dns_editor" => {
-          "access_key" => "xxxxxxxxxxxxxxxxxxxx",
-          "access_secret" => "yyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyy",
-          "zone" => "c2gops.com",
-          "ttl" => 300
-        },
-        "piazza" => {
-          "endpoint" => "https://piazza.com/basic_lti",
-          "key" => "hhhhhhhhhhhh",
-          "secret" => "ggggggggggggggg"
-        },
-        "google" => {
-          "yt_service_developer_key" => "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
-          "google_client_id" => "nnnnnnnnnnnn.apps.googleusercontent.com",
-          "google_client_secret" => "sssssssssssssssssssss"
-        }
-      }
-    end
   end
 end

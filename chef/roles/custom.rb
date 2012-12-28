@@ -9,6 +9,7 @@ run_list(
     "recipe[class2go-apache]",
     # "recipe[shib]",
     "recipe[class2go-deploy]",
+    "recipe[class2go-celery-worker]",
     "recipe[class2go-logging]",
     # "recipe[class2go-ops-dns]",
     "recipe[class2go-database-config]",

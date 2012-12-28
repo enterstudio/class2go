@@ -34,7 +34,13 @@ AWS_ACCESS_KEY_ID = '<%= @node[:aws][:access_key] %>'
 AWS_SECRET_ACCESS_KEY = '<%= @node[:aws][:access_secret] %>'
 AWS_STORAGE_BUCKET_NAME = '<%= @node[:aws][:storage_bucket] %>'
 
-MEDIA_ROOT = ''
+MEDIA_ROOT = "<%= @node[:files][:root_dir] %>"
+LOCAL_MEDIA_SERVER_ROOT = "<%= @node[:files][:root_url] %>"
+
+CELERY_ALWAYS_EAGER = True
+CELERY_EAGER_PROPAGATES_EXCEPTIONS = True
+SQS_AWS_ACCESS_KEY_ID = '<%= @node[:aws][:sqs_access_key] %>'
+SQS_AWS_SECRET_ACCESS_KEY = '<%= @node[:aws][:sqs_access_secret] %>'
 
 # use AWS ephemeral storage
 KELVINATOR_WORKING_DIR = '/mnt'

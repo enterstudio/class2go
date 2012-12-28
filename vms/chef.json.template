@@ -1,0 +1,60 @@
+{
+    "system" :  {
+        "admin_user" :   "{{user}}",
+        "admin_group" :  "{{group}}",
+        "admin_home" :   "/home/{{user}}"
+    },
+    "aws" :  {
+	// # AWS GLOBAL
+        "access_key" :  "local",
+        "access_secret" :  "local",
+        "sqs_access_key" :  "{{aws_key}}",
+        "sqs_access_secret" :  "{{aws_secret}}",
+	// # RDS
+        "database_host" :  "{{db_host}}",
+        "database_instance" :  "class2go",
+        "database_user" :  "class2go",
+        "database_password" :  "class2gopw",
+	// # S3
+        "storage_bucket" :  "stage-c2g",
+	// # SES
+        "smtp_user" :  "xxxxx",
+        "smtp_password" :  "xxxxx"
+    },
+    "main" :  {
+        "production" :  "True",
+        "instance" :  "class2go",
+        "maint" :  "False",
+        "admin_name" :  "admin",
+        "admin_email" :  "course-admin@thoughtworks.com",
+        "snippet_email" :  "course-admin@thoughtworks.com",
+        "django_secret" :  "class2go"
+    },
+    "files" :  {
+        "root_dir" :  "/opt/class2go/files",
+        "root_url" :  "http://xxxxx"
+    },
+    "apps" :  {
+        "class2go" :  {
+	    "servername" :  "https://class.thoughtworks.com",
+	    "serveralias" :  "*.class.thoughtworks.com",
+	    "git_branch" :  "origin/master"
+        }
+    },
+    "util" :  {
+        "celery_database" :  "/opt/class2go/celery/celerydb.sqlite",
+        "celery_timeout" :  "7200",
+        "celery_concurrency" :  "8"
+    },
+    "piazza" :  {
+        "endpoint" :  "https://piazza.com/basic_lti",
+        "key" :  "xxxxx",
+        "secret" :  "xxxxx"
+    },
+    "google" :  {
+        "yt_service_developer_key" :  "xxxxx",
+        "google_client_id" :  "xxxxx.apps.googleusercontent.com",
+        "google_client_secret" :  "xxxxx"
+    },
+    "run_list": [ "role[custom]" ]
+}

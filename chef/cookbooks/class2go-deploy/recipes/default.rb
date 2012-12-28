@@ -19,6 +19,13 @@ node['apps'].keys.each do |app|
         action :create
     end
 
+    directory "/opt/#{app}/files" do
+        owner node['system']['admin_user']
+        group node['system']['admin_group']
+        mode 00755
+        action :create
+    end
+
     # For initial machine bring up, check out the first time.  Doing as a
     # shell script so we can test first.
     bash "git clone" do

@@ -22,7 +22,6 @@ node["apps"].keys.each do |app|
     variables({
         :servername => node["apps"][app]["servername"], 
         :serveralias => node["apps"][app]["serveralias"], 
-        :shib_id => node["apps"][app]["shib_id"],
         :appname => app,
         :user => node["system"]["admin_user"]
       })

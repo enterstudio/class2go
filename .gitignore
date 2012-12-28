@@ -1,3 +1,5 @@
+vms/.vagrant
+
 venv_c2g
 
 django-class2go
