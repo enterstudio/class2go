@@ -53,6 +53,7 @@ ERROR_SNIPPET_EMAILS = ['YOURNAME@stanford.edu',]
 AWS_ACCESS_KEY_ID = 'local'
 AWS_SECRET_ACCESS_KEY = 'local'
 AWS_STORAGE_BUCKET_NAME = 'local'
+AWS_SECURE_STORAGE_BUCKET_NAME = 'local'
 # Celery must run for file uploads to work properly and video resizing to take place, etc.
 # If you have the above values set to 'local', then set this value to True:
 CELERY_ALWAYS_EAGER = True
@@ -60,8 +61,8 @@ CELERY_EAGER_PROPAGATES_EXCEPTIONS = True
 SQS_AWS_ACCESS_KEY_ID = ''
 SQS_AWS_SECRET_ACCESS_KEY = ''
 
-AWS_SECURE_STORAGE_BUCKET_NAME = 'local'
 MEDIA_ROOT = getcwd() + '/../videos'
+LOCAL_MEDIA_SERVER_ROOT = "http://localhost:8101/"
 
 # Celery must run for file uploads to work properly and video resizing to take place, etc.
 # If you have the above values set to 'local', then set this value to True:

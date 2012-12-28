@@ -15,6 +15,7 @@ from c2g.models import Exam, Video, VideoActivity, VideoDownload
 from courses.actions import auth_is_course_admin_view_wrapper
 from courses.common_page_data import get_common_page_data
 from courses.videos.forms import *
+from c2g.util import is_storage_local
 import kelvinator.tasks
 import settings
 
@@ -264,8 +265,11 @@ def upload(request):
 
             # kick off remote jobs
             kelvinator.tasks.kelvinate.delay(new_video.file.name)
-            kelvinator.tasks.resize.delay(new_video.file.name, "large")
-            kelvinator.tasks.resize.delay(new_video.file.name, "small")
+            # kelvinator.tasks.resize.delay(new_video.file.name, "large")
+            # kelvinator.tasks.resize.delay(new_video.file.name, "small")
+            
+            if is_storage_local():
+                return redirect('courses.videos.views.list', course_prefix, course_suffix)
 
             if new_video.url:
                 return redirect('courses.videos.views.list', course_prefix, course_suffix)

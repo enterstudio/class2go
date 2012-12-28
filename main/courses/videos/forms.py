@@ -1,5 +1,6 @@
 from django import forms
 from c2g.models import ContentSection, Video, Exercise, Course
+from c2g.util import is_storage_local
 # import the logging library
 #import logging
 #logger = logging.getLogger('django')
@@ -22,7 +23,7 @@ class S3UploadForm(forms.ModelForm):
     
     def clean_url(self):
         url = self.cleaned_data['url']
-        if url:
+        if url and not is_storage_local():
             yt_service = gdata.youtube.service.YouTubeService()
             try:
                 entry = yt_service.GetYouTubeVideoEntry(video_id=url)

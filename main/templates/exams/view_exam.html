@@ -779,13 +779,13 @@ You don't have Javascript enabled or jQuery was not loaded.  This page won't wor
 </script>
 {% if videotest %}
 <script>
-        var videoURL = 'http://www.youtube.com/embed/{% if video.mode == 'draft' %}{{video.url}}{% else %}{{video.image.url}}{% endif %}?autoplay=0&wmode=transparent&fs=0&rel=0&modestbranding=1&showinfo=0&start=0&enablejsapi=1&disablekb=1&amp;';
-        var thumbnailPath = "http://{{common_page_data.aws_storage_bucket_name}}.s3-website-us-west-2.amazonaws.com/{{common_page_data.course_prefix}}/{{common_page_data.course_suffix}}/videos/{% if video.mode == 'draft' %}{{video.id}}{% else %}{{video.image.id}}{% endif %}/jpegs/";
+        var videoURL = "{{videoURL}}";
+        var thumbnailPath = "{{thumbnailPath}}";
 
         // questionTimes from parsed XML metadata 
         var questionTimes = JSON.parse('{{question_times|escapejs}}');
 {% include 'exams/videotest.js' %}
-{% if not video.url %}
+{% if not videoURL %}
     $('#demoplayer').hide();
     $('.question').eq(0).show();
     $('#exam-pane').fadeTo("slow", 1.0);

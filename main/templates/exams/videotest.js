@@ -150,11 +150,11 @@
                             //thumbSet.addSlideIndex(sorted[i]);
                             addSlideIndex(sorted[i]);
                         }
-                        if (C2G.videoSetup.questions.hasOwnProperty(sorted[i])) {
-                            //var tmpDiv=thumbSet.addQuizSlide(sorted[i]);
-                            var tmpDiv=addQuizSlide(sorted[i]);
-                            C2G.videoSetup.slideIndices[sorted[i]]={displayDiv: tmpDiv}; //Quiz takes precedence and overwrites if both quiz and thumb are at the same time
-                        }
+                        // if (C2G.videoSetup.questions.hasOwnProperty(sorted[i])) {
+                        //     //var tmpDiv=thumbSet.addQuizSlide(sorted[i]);
+                        //     var tmpDiv=addQuizSlide(sorted[i]);
+                        //     C2G.videoSetup.slideIndices[sorted[i]]={displayDiv: tmpDiv}; //Quiz takes precedence and overwrites if both quiz and thumb are at the same time
+                        // }
                     }
                     lastTime=sorted[i];
                 }
@@ -176,7 +176,7 @@
             5. PROFIT!!!
             */
 
-            window.popcornVideo = Popcorn.youtube("#demoplayer", videoURL);
+            window.popcornVideo = Popcorn.smart("#demoplayer", videoURL);
 
             C2G.checkSubmitStatus = function () {
                 if ($('#survey-submit').length && $('.question:last').css('display') == "block") {

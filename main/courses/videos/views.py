@@ -4,6 +4,7 @@ from django.core.urlresolvers import reverse
 from django.db.models import Q
 from django.http import HttpResponse, Http404
 from django.shortcuts import render, render_to_response, redirect, HttpResponseRedirect
+from django.conf import settings
 from django.template import RequestContext
 
 from c2g.models import ContentGroup, ContentSection, Exam, Exercise, PageVisitLog, ProblemActivity, Video, VideoActivity, VideoToExercise
@@ -13,6 +14,7 @@ from courses.course_materials import get_course_materials, get_children, get_con
 from courses.videos.forms import *
 from courses.views import get_full_contentsection_list
 from courses.forms import *
+from c2g.util import is_storage_local
 
 from xml.dom.minidom import parseString
 
@@ -147,12 +149,25 @@ def view(request, course_prefix, course_suffix, slug):
         exam.live_datetime = video.live_datetime    # needed so video shows up
         question_times = ""
 
+    videoURL = None
+    thumbnailPath = None
+    
+    if is_storage_local():
+        videoURL = settings.LOCAL_MEDIA_SERVER_ROOT + str(video.file)
+        thumbnailPath = settings.LOCAL_MEDIA_SERVER_ROOT + course.prefix + "/" + course.suffix + "/videos/" + str(video.id if video.mode == 'draft' else video.image.id) + "/jpegs/"
+    elif video.url:
+        videoURL = "http://www.youtube.com/embed/" + (video.url if video.mode == 'draft' else video.image.url) + "?autoplay=0&wmode=transparent&fs=0&rel=0&modestbranding=1&showinfo=0&start=0&enablejsapi=1&disablekb=1&amp;"
+        thumbnailPath = "http://" + settings.AWS_STORAGE_BUCKET_NAME + ".s3-website-us-west-2.amazonaws.com/" + course.prefix + "/" + course.suffix + "/videos/" + str(video.id if video.mode == 'draft' else video.image.id) + "/jpegs/"
+
+
     # change from 'videos/view.html' to 'exams/view_exam.html'
     return render_to_response('exams/view_exam.html', 
                               {
                                'common_page_data':    common_page_data, 
                                'video':               video, 
-                               'video_rec':           video_rec, 
+                               'video_rec':           video_rec,
+                               'videoURL':            videoURL,
+                               'thumbnailPath':       thumbnailPath,
                                'prev_slug':           prev_slug, 
                                'next_slug':           next_slug, 
                                'contentsection_list': full_contentsection_list, 

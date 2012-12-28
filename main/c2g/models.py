@@ -25,6 +25,7 @@ from django.core.exceptions import ValidationError
 from django.db.models.signals import post_save
 from django.db import models
 from django.db.models import Avg, Count, Max, StdDev
+from django.conf import settings;
 
 from c2g.util import is_storage_local, get_site_url
 from kelvinator.tasks import sizes as video_resize_options 
@@ -498,7 +499,7 @@ class File(TimestampMixin, Stageable, Sortable, Deletable, models.Model):
         if not self.file.storage.exists(filename):
             return ""
         if is_storage_local():
-            url = get_site_url() + self.file.storage.url(filename)
+            url = settings.LOCAL_MEDIA_SERVER_ROOT + self.file.storage.url(filename)
         else:
             url = self.file.storage.url_monkeypatched(filename, response_headers={'response-content-disposition': 'attachment'})
         return url
@@ -956,7 +957,7 @@ class Video(TimestampMixin, Stageable, Sortable, Deletable, models.Model):
         if is_storage_local():
             # FIXME: doesn't work on local sites yet
             print "DEBUG: Multiple download links don't work on local sites yet, sorry." 
-            return [('large', get_site_url() + mystore.url(myname), self.file.size, '')]
+            return [('large', settings.LOCAL_MEDIA_SERVER_ROOT + mystore.url(myname), self.file.size, '')]
         else:
             # XXX: very S3 specific
             urlof   = mystore.url_monkeypatched

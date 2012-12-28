@@ -9,6 +9,7 @@ from django.shortcuts import redirect
 from django.core.urlresolvers import reverse
 from django.views.decorators.http import require_POST
 from django.views.decorators.csrf import csrf_protect
+from django.conf import settings;
 
 from courses.forms import *
 
@@ -154,7 +155,7 @@ def get_full_contentsection_list(course, filter_children=True):
                         index_list.append((tag, t.index, t_id, cs_id, t.slug, t.title))
                     else:
                         icon_type = t.get_icon_type()
-                        index_list.append((tag, t.index, t_id, cs_id, t.file.url, t.title, icon_type))
+                        index_list.append((tag, t.index, t_id, cs_id, settings.LOCAL_MEDIA_SERVER_ROOT + t.file.url, t.title, icon_type))
 
         full_index_list.append(sorted(index_list, key = index))
         if index_list:                           # don't show empty sections
