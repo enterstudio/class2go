@@ -23,7 +23,7 @@
     },
     "main" :  {
         "production" :  "True",
-        "instance" :  "class2go",
+        "instance" :  "prod",
         "maint" :  "False",
         "admin_name" :  "admin",
         "admin_email" :  "course-admin@thoughtworks.com",

@@ -7,12 +7,12 @@ execute "start hostname" do
     action :run
 end
 
-# template "/home/#{node["system"]["admin_user"]}/.bash_aliases" do
-#     source "bash_aliases.erb"
-#     owner node["system"]["admin_user"]
-#     group node["system"]["admin_group"]
-#     mode "0644"
-# end
+template "/home/#{node["system"]["admin_user"]}/.bash_aliases" do
+    source "bash_aliases.erb"
+    owner node["system"]["admin_user"]
+    group node["system"]["admin_group"]
+    mode "0644"
+end
 
 package "git" do
     action :install
@@ -37,7 +37,7 @@ package "python-mysqldb" do
 end
 
 easy_install_package "django" do
-    version "1.4.1"
+    version "1.4.2"
     action :install
 end
 

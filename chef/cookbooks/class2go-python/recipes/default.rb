@@ -82,10 +82,10 @@ easy_install_package "ipdb" do
     action :install
 end
    
-easy_install_package "django_nose" do
+easy_install_package "django-nose" do
     action :install
 end
    
-easy_install_package "django_coverage" do
+easy_install_package "django-coverage" do
     action :install
 end

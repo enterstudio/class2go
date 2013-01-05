@@ -26,6 +26,13 @@ node['apps'].keys.each do |app|
         action :create
     end
 
+    directory "/var/log/#{app}/" do
+        owner "www-data"
+        group "www-data"
+        mode 00755
+        action :create
+    end
+
     # For initial machine bring up, check out the first time.  Doing as a
     # shell script so we can test first.
     bash "git clone" do
