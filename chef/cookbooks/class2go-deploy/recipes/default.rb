@@ -20,8 +20,8 @@ node['apps'].keys.each do |app|
     end
 
     directory "/opt/#{app}/files" do
-        owner node['system']['admin_user']
-        group node['system']['admin_group']
+        owner "www-data"
+        group "www-data"
         mode 00755
         action :create
     end
