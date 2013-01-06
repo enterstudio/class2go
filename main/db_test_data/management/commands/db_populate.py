@@ -739,7 +739,7 @@ def create_course_nlp(data, users):
 
 def create_c2g_team():
     for (username,email,first,last) in [('sefk_auto','sefklon@gmail.com','Sef','Kloninger'),
-                                        ('jbau_auto','jbau@stanford.edu','Jason','Bau'),
+                                        ('jbau_auto','exceedhl@gmail.com','Jason','Bau'),
                                         ('wescott_auto','wescott@cs.stanford.edu','Mike','Wescott'),
                                         ('dcadams_auto','dcadams@stanford.edu','David','Adams'),
                                         ('jinpa_auto','jmanning@cs.stanford.edu','Jane','Manning'),
