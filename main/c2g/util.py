@@ -41,6 +41,7 @@ def upgrade_to_https_and_downgrade_upon_redirect(view):
     def inner(request, *args, **kw):
         #explicitly upgrading
         if (settings.INSTANCE == 'stage' or settings.INSTANCE == 'prod') and not request.is_secure():
-            return redirect('https://'+request.get_host()+request.get_full_path())
+            return redirects_use_http(view(request, *args, **kw),request)
+            # return redirect('https://'+request.get_host()+request.get_full_path())
         return redirects_use_http(view(request, *args, **kw),request)
     return inner
