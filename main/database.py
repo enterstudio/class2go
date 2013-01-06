@@ -9,6 +9,7 @@ DATABASES = {
         'PASSWORD': 'class2gopw',                  # Not used with sqlite3.
         'HOST': '',                      # Set to empty string for localhost. Not used with sqlite3.
         'PORT': '',                      # Set to empty string for default. Not used with sqlite3.
+        'OPTIONS': { 'init_command': 'SET storage_engine=INNODB,character_set_connection=utf8,collation_connection=utf8_unicode_ci'},
     },
     'celery': {
         'ENGINE': 'django.db.backends.sqlite3',
