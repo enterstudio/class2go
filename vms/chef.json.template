@@ -32,7 +32,7 @@
         "django_secret" :  "class2go"
     },
     "files" :  {
-        "root_dir" :  "/opt/class2go/files",
+        "root_dir" :  "/opt/class2go/files/",
         "root_url" :  "{{files_root_url}}"
     },
     "apps" :  {
