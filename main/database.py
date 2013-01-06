@@ -19,6 +19,8 @@ DATABASES = {
 
 SECRET_KEY = ''
 
+SERVER_EMAIL = 'noreply@example.com'
+
 # Set PRODUCTION to True so we don't show stackdumps on errors
 PRODUCTION = False
 # Set this this to true if you want to show our maint page as root

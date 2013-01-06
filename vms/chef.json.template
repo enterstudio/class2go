@@ -18,16 +18,17 @@
 	// # S3
         "storage_bucket" :  "stage-c2g",
 	// # SES
-        "smtp_user" :  "xxxxx",
-        "smtp_password" :  "xxxxx"
+        "smtp_user" :  "{{smtp_user}}",
+        "smtp_password" :  "{{smtp_password}}"
     },
     "main" :  {
         "production" :  "True",
         "instance" :  "prod",
         "maint" :  "False",
         "admin_name" :  "admin",
-        "admin_email" :  "course-admin@thoughtworks.com",
-        "snippet_email" :  "course-admin@thoughtworks.com",
+        "admin_email" :  "{{admin_email}}",
+	"server_email" : "{{server_email}}"
+        "snippet_email" :  "{{admin_email}}",
         "django_secret" :  "class2go"
     },
     "files" :  {

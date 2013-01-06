@@ -22,6 +22,8 @@ MAINTENANCE_LANDING_PAGE = <%= @node[:main][:maint] %>
 INSTANCE = '<%= @node[:main][:instance] %>'
 APP = '<%= @appname %>'
 
+SERVER_EMAIL = '<%= @node[:main][:server_email] %>'
+
 # full stackdumps go to this address
 ADMINS = (
         ('<%= @node[:main][:admin_name] %>', '<%= @node[:main][:admin_email] %>'),

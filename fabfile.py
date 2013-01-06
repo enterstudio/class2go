@@ -49,11 +49,16 @@ def _prepare_chef_solo(data):
     _put_parsed_file("vms/chef.json.template", "/tmp/chef.json", data)
 
 @roles("app")
-def deploy_app(user='vagrant', group='admin', aws_key='', aws_secret='', db_host=env.roledefs['db'][0]):
+def deploy_app(user='vagrant', group='admin', 
+               admin_email='admin@example.com', smtp_user='', smtp_password='', server_email='noreply@example.com',
+               aws_key='', aws_secret='', 
+               db_host=env.roledefs['db'][0]):
     _install_chef()
     data = {
         'user' : user,
         'group' : group,
+        'admin_email' : admin_email,
+        'server_email' : server_email,
         'aws_key' : aws_key,
         'aws_secret' : aws_secret,
         'db_host' : db_host

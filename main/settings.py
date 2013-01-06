@@ -338,7 +338,10 @@ except NameError:
 
 # Email Settings
 
-SERVER_EMAIL = 'noreply@thoughtworks.com'
+try:
+    SERVER_EMAIL
+except NameError:
+    SERVER_EMAIL = 'noreply@example.com'
 
 # For Production, or if override is set, actually send email
 if PRODUCTION or EMAIL_ALWAYS_ACTUALLY_SEND:
