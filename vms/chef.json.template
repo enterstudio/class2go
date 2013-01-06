@@ -27,7 +27,7 @@
         "maint" :  "False",
         "admin_name" :  "admin",
         "admin_email" :  "{{admin_email}}",
-	"server_email" : "{{server_email}}"
+	"server_email" : "{{server_email}}",
         "snippet_email" :  "{{admin_email}}",
         "django_secret" :  "class2go"
     },

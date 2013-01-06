@@ -59,6 +59,8 @@ def deploy_app(user='vagrant', group='admin',
         'group' : group,
         'admin_email' : admin_email,
         'server_email' : server_email,
+        'smtp_user' : smtp_user,
+        'smtp_password' : smtp_password,
         'aws_key' : aws_key,
         'aws_secret' : aws_secret,
         'db_host' : db_host
