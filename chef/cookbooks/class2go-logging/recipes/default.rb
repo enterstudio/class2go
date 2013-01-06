@@ -7,8 +7,8 @@
 
 
 directory "/var/log/django" do
-    owner "root"
-    group "root"
+    owner "www-data"
+    group "www-data"
     mode 00777
     action :create
 end
@@ -16,8 +16,8 @@ end
 node['apps'].keys.each do |app|
     
     file "/var/log/django/#{app}-django.log" do
-        owner "root"
-        group "root"
+        owner "www-data"
+        group "www-data"
         mode 00666
         action :create
     end
