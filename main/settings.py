@@ -296,12 +296,12 @@ LOGGING = {
     },
     'loggers': {
         '': {
-            'handlers':['mail_admins','logfile', 'console'],
+            'handlers':['logfile', 'console'],
             'propagate': True,
             'level':'DEBUG',
         },
         'django.request': {
-            'handlers': ['mail_admins','logfile', 'console'],
+            'handlers': ['logfile', 'console'],
             'level': 'INFO',
             'propagate': False,
         },
