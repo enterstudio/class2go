@@ -31,6 +31,10 @@ def init_db():
 def migrate_db():
     run("cd ~/class2go/main && python manage.py migrate")
     run("cd ~/class2go/main && python manage.py migrate --database=celery")
+
+@roles("app")
+def create_tw_institution():
+    run("cd ~/class2go/main && python manage.py create_tw_institution")
     
 @roles("app")
 def create_super_user():
