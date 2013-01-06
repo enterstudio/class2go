@@ -13,7 +13,7 @@ DATABASES = {
     },
 }
 
-LOGGING_DIR = '/var/log/<%= @appname %>/'
+LOGGING_DIR = '/var/log/django/'
 
 # When PRODUCTION=True we don't show stackdumps on errors.  Careful, no quotes.
 PRODUCTION = <%= @node[:main][:production] %>

@@ -33,7 +33,7 @@
     },
     "files" :  {
         "root_dir" :  "/opt/class2go/files",
-        "root_url" :  "http://xxxxx"
+        "root_url" :  "{{files_root_url}}"
     },
     "apps" :  {
         "class2go" :  {

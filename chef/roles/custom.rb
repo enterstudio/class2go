@@ -14,5 +14,6 @@ run_list(
     "recipe[class2go-database-config]",
     "recipe[class2go-collectstatic]",
     "recipe[class2go-celery-worker]",
+    "recipe[class2go-file-server]",
     "recipe[class2go-apache-restart]"
 )

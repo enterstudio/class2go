@@ -19,7 +19,7 @@ node['apps'].keys.each do |app|
         action :create
     end
 
-    directory "/opt/#{app}/files" do
+    directory "#{node['files']['root_dir']}" do
         owner "www-data"
         group "www-data"
         mode 00755

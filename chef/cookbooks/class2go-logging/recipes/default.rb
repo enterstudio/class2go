@@ -18,7 +18,7 @@ node['apps'].keys.each do |app|
     file "/var/log/django/#{app}-django.log" do
         owner "www-data"
         group "www-data"
-        mode 00666
+        mode 00777
         action :create
     end
 
