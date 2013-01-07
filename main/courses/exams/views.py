@@ -304,7 +304,6 @@ def view_submissions_to_grade(request, course_prefix, course_suffix, exam_slug):
 
     if is_storage_local():
         reports_dir = local_storage_root_dir() + "/" + course_prefix + "/" + course_suffix + "/reports/"
-        print reports_dir
         if not default_storage.exists(reports_dir):
             os.mkdir(reports_dir)
         copyfile(temp_file_path, reports_dir + fname)
