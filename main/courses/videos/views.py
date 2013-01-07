@@ -14,7 +14,7 @@ from courses.course_materials import get_course_materials, get_children, get_con
 from courses.videos.forms import *
 from courses.views import get_full_contentsection_list
 from courses.forms import *
-from c2g.util import is_storage_local
+from c2g.util import is_storage_local, local_file_server_root
 
 from xml.dom.minidom import parseString
 
@@ -153,8 +153,8 @@ def view(request, course_prefix, course_suffix, slug):
     thumbnailPath = None
     
     if is_storage_local():
-        videoURL = settings.LOCAL_MEDIA_SERVER_ROOT + str(video.file)
-        thumbnailPath = settings.LOCAL_MEDIA_SERVER_ROOT + course.prefix + "/" + course.suffix + "/videos/" + str(video.id if video.mode == 'draft' else video.image.id) + "/jpegs/"
+        videoURL = local_file_server_root() + "/" + str(video.file)
+        thumbnailPath = local_file_server_root() + "/" + course.prefix + "/" + course.suffix + "/videos/" + str(video.id if video.mode == 'draft' else video.image.id) + "/jpegs/"
     elif video.url:
         videoURL = "http://www.youtube.com/embed/" + (video.url if video.mode == 'draft' else video.image.url) + "?autoplay=0&wmode=transparent&fs=0&rel=0&modestbranding=1&showinfo=0&start=0&enablejsapi=1&disablekb=1&amp;"
         thumbnailPath = "http://" + settings.AWS_STORAGE_BUCKET_NAME + ".s3-website-us-west-2.amazonaws.com/" + course.prefix + "/" + course.suffix + "/videos/" + str(video.id if video.mode == 'draft' else video.image.id) + "/jpegs/"

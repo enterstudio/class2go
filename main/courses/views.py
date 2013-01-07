@@ -17,6 +17,7 @@ from courses.actions import auth_view_wrapper
 
 from c2g.models import CurrentTermMap
 import settings
+from c2g.util import local_file_server_root
 
 
 def index(item): # define a index function for list items
@@ -155,7 +156,7 @@ def get_full_contentsection_list(course, filter_children=True):
                         index_list.append((tag, t.index, t_id, cs_id, t.slug, t.title))
                     else:
                         icon_type = t.get_icon_type()
-                        index_list.append((tag, t.index, t_id, cs_id, settings.LOCAL_MEDIA_SERVER_ROOT + t.file.url, t.title, icon_type))
+                        index_list.append((tag, t.index, t_id, cs_id, local_file_server_root() + "/" + t.file.url, t.title, icon_type))
 
         full_index_list.append(sorted(index_list, key = index))
         if index_list:                           # don't show empty sections

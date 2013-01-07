@@ -5,7 +5,7 @@ from django.core.exceptions import MultipleObjectsReturned
 from django.core.management.base import BaseCommand, CommandError
 
 from c2g.models import Video
-from c2g.util import is_storage_local
+from c2g.util import is_storage_local,local_storage_root_dir
 import kelvinator.tasks 
 
 
@@ -68,7 +68,7 @@ class Command(BaseCommand):
         #    where='remote'
         #if where == 'local':
         if (is_storage_local() or options['force_local']) and not options['force_remote']:
-            media_root = getattr(settings, 'MEDIA_ROOT')
+            media_root = local_storage_root_dir()
             local_path = media_root + "/" + video.file.name
             kelvinator.tasks.kelvinate(local_path, options['target_frames'], options['notify_addr'])
             print "Kelvination complete: %s" % video.file.name

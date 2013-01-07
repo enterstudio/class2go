@@ -27,6 +27,7 @@ from celery import task
 from utility import *
 import numpy as np
 import shutil
+from c2g.util import local_storage_root_dir,is_storage_local
 
     
 ##
@@ -182,7 +183,7 @@ def write_manifest(notify_buf, jpeg_dir, keep_frames, keep_times):
 def put_thumbs(notify_buf, jpeg_dir, prefix, suffix, video_id, store_loc):
     # I wish Filesystem API worked the same for local and remote, but it don't
     if store_loc == 'local':
-        root = getattr(settings, 'MEDIA_ROOT')
+        root = local_storage_root_dir()
         store_path = root + "/" + prefix + "/" + suffix + "/videos/" + str(video_id) + "/jpegs"
         if default_storage.exists(store_path):
             infoLog(notify_buf, "Found prior directory, removing: %s" % store_path)
@@ -290,7 +291,7 @@ def do_resize(notify_buf, working_dir, target_dir, video_file, target_size):
 def upload(notify_buf, target_dir, target_part, prefix, suffix, video_id, video_file, store_loc):
     # I wish Filesystem API worked the same for local and remote, but it don't
     if store_loc == 'local':
-        root = getattr(settings, 'MEDIA_ROOT')
+        root = local_storage_root_dir()
         store_path = root + "/" + prefix + "/" + suffix + "/videos/" + str(video_id) + "/" + target_part
         if default_storage.exists(store_path):
             infoLog(notify_buf, "Found prior directory, removing: %s" % store_path)
@@ -331,7 +332,7 @@ def resize(store_path_raw, target_raw, notify_addr=None):
     (store_path, course_prefix, course_suffix, video_id, video_file) = splitpath(store_path_raw)
 
     store_loc = 'remote'
-    if getattr(settings, 'AWS_ACCESS_KEY_ID') == 'local':
+    if is_storage_local():
         store_loc = 'local'
 
     work_dir = None

@@ -115,7 +115,7 @@ class Command(BaseCommand):
             """
             store_contents=[]
             if awsKey == "local" or awsSecret == "local":
-                media_root = getattr(settings, 'MEDIA_ROOT')
+                media_root = local_storage_root_dir()
                 for (path, dirs, files) in os.walk(media_root):
                     for f in files:
                         p=os.path.join(path, f)

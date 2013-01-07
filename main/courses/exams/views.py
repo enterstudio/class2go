@@ -9,10 +9,13 @@ import datetime
 import csv
 import HTMLParser
 import json
+import os
+from shutil import copyfile
 from django.db.models import Sum
 import urllib2, urlparse
 from xml.dom.minidom import parseString
-
+from django.core.files.storage import default_storage
+from c2g.util import local_storage_root_dir,is_storage_local,local_file_server_root
 
 FILE_DIR = getattr(settings, 'FILE_UPLOAD_TEMP_DIR', '/tmp')
 AWS_ACCESS_KEY_ID = getattr(settings, 'AWS_ACCESS_KEY_ID', '')
@@ -272,7 +275,8 @@ def view_submissions_to_grade(request, course_prefix, course_suffix, exam_slug):
 
     submitters = ExamRecord.objects.filter(exam=exam, complete=True, time_created__lt=exam.grace_period).values('student').distinct()
     fname = course_prefix+"-"+course_suffix+"-"+exam_slug+"-"+datetime.datetime.now().strftime("%Y-%m-%d-%H:%M:%S")+".csv"
-    outfile = open(FILE_DIR+"/"+fname,"w+")
+    temp_file_path = FILE_DIR+"/"+fname
+    outfile = open(temp_file_path,"w+")
 
     could_not_parse = ""
 
@@ -298,14 +302,23 @@ def view_submissions_to_grade(request, course_prefix, course_suffix, exam_slug):
         outfile.write("Could not parse data from the following users: " + could_not_parse + "\n")
         outfile.write(data)
 
-    #write to S3
-    secure_file_storage = S3BotoStorage(bucket=AWS_SECURE_STORAGE_BUCKET_NAME, access_key=AWS_ACCESS_KEY_ID, secret_key=AWS_SECRET_ACCESS_KEY)
-    s3file = secure_file_storage.open("/%s/%s/reports/exams/%s" % (course_prefix, course_suffix, fname),'w')
-    outfile.seek(0)
-    s3file.write(outfile.read())
-    s3file.close()
-    outfile.close()
-    return HttpResponseRedirect(secure_file_storage.url_monkeypatched("/%s/%s/reports/exams/%s" % (course_prefix, course_suffix, fname), response_headers={'response-content-disposition': 'attachment'}))
+    if is_storage_local():
+        reports_dir = local_storage_root_dir() + "/" + course_prefix + "/" + course_suffix + "/reports/"
+        print reports_dir
+        if not default_storage.exists(reports_dir):
+            os.mkdir(reports_dir)
+        copyfile(temp_file_path, reports_dir + fname)
+        file_url = local_file_server_root() + "/" + course_prefix + "/" + course_suffix + "/reports/" + fname
+        return HttpResponseRedirect(file_url)
+    else:
+        #write to S3
+        secure_file_storage = S3BotoStorage(bucket=AWS_SECURE_STORAGE_BUCKET_NAME, access_key=AWS_ACCESS_KEY_ID, secret_key=AWS_SECRET_ACCESS_KEY)
+        s3file = secure_file_storage.open("/%s/%s/reports/exams/%s" % (course_prefix, course_suffix, fname),'w')
+        outfile.seek(0)
+        s3file.write(outfile.read())
+        s3file.close()
+        outfile.close()
+        return HttpResponseRedirect(secure_file_storage.url_monkeypatched("/%s/%s/reports/exams/%s" % (course_prefix, course_suffix, fname), response_headers={'response-content-disposition': 'attachment'}))
 
 def parse_val(v):
     """Helper function to parse AJAX submissions"""
@@ -718,7 +731,8 @@ def view_csv_grades(request, course_prefix, course_suffix, exam_slug):
     
     graded_students = ExamScore.objects.filter(course=course, exam=exam).values('student','student__username').distinct()
     fname = course_prefix+"-"+course_suffix+"-"+exam_slug+"-grades-"+datetime.datetime.now().strftime("%Y-%m-%d-%H:%M:%S")+".csv"
-    outfile = open(FILE_DIR+"/"+fname,"w+")
+    temp_file_path = FILE_DIR+"/"+fname
+    outfile = open(temp_file_path,"w+")
 
     could_not_parse = ""
 
@@ -731,15 +745,23 @@ def view_csv_grades(request, course_prefix, course_suffix, exam_slug):
             outfile.write(outstring)
 
     outfile.write("\n")
-
-    #write to S3
-    secure_file_storage = S3BotoStorage(bucket=AWS_SECURE_STORAGE_BUCKET_NAME, access_key=AWS_ACCESS_KEY_ID, secret_key=AWS_SECRET_ACCESS_KEY)
-    s3file = secure_file_storage.open("/%s/%s/reports/exams/%s" % (course_prefix, course_suffix, fname),'w')
-    outfile.seek(0)
-    s3file.write(outfile.read())
-    s3file.close()
-    outfile.close()
-    return HttpResponseRedirect(secure_file_storage.url("/%s/%s/reports/exams/%s" % (course_prefix, course_suffix, fname), response_headers={'response-content-disposition': 'attachment'}))
+    
+    if is_storage_local():
+        reports_dir = local_storage_root_dir() + "/" + course_prefix + "/" + course_suffix + "/reports/"
+        if not default_storage.exists(reports_dir):
+            os.mkdir(reports_dir)
+        copyfile(temp_file_path, reports_dir + fname)
+        file_url = local_file_server_root() + "/" + course_prefix + "/" + course_suffix + "/reports/" + fname
+        return HttpResponseRedirect(file_url)
+    else:
+        #write to S3
+        secure_file_storage = S3BotoStorage(bucket=AWS_SECURE_STORAGE_BUCKET_NAME, access_key=AWS_ACCESS_KEY_ID, secret_key=AWS_SECRET_ACCESS_KEY)
+        s3file = secure_file_storage.open("/%s/%s/reports/exams/%s" % (course_prefix, course_suffix, fname),'w')
+        outfile.seek(0)
+        s3file.write(outfile.read())
+        s3file.close()
+        outfile.close()
+        return HttpResponseRedirect(secure_file_storage.url("/%s/%s/reports/exams/%s" % (course_prefix, course_suffix, fname), response_headers={'response-content-disposition': 'attachment'}))
 
 
 

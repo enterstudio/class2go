@@ -1,5 +1,6 @@
 import settings
 import urlparse
+import os
 
 from django.contrib.sites.models import Site
 from django.core.files.storage import FileSystemStorage, get_storage_class
@@ -11,6 +12,12 @@ from django.utils.functional import wraps
 def is_storage_local():
     """Check whether django believes it's keeping things on local disk"""
     return get_storage_class() == FileSystemStorage
+
+def local_storage_root_dir():
+    return os.path.abspath(getattr(settings, 'MEDIA_ROOT')).rstrip("/")
+
+def local_file_server_root():
+    return getattr(settings, 'LOCAL_MEDIA_SERVER_ROOT').strip("/")
 
 def get_site_domain():
     """Return a bare domain name for the current site"""

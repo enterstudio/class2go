@@ -66,7 +66,7 @@ class Command(BaseCommand):
         #    where='remote'
         #if where == 'local':
         if (is_storage_local() or options['force_local']) and not options['force_remote']:
-            media_root = getattr(settings, 'MEDIA_ROOT')
+            media_root = local_storage_root_dir()
             local_path = media_root + "/" + video.file.name
             kelvinator.tasks.resize(local_path, target, options['notify_addr'])
             print "Resize complete: %s" % video.file.name
