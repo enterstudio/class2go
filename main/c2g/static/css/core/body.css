@@ -210,7 +210,7 @@ body.home {
     background:#fbf7f4;
 }
 .home #c2g_layout_topbar {
-    display:none;
+    display:block;
 }
 .home .hero-header {
     background:url(/static/graphics/core/bg-hero-header.jpg) no-repeat top center;
@@ -394,6 +394,11 @@ small.date {
     top:-32px;
     right:20px;
 }
+
+.home .top-nav {
+  top: -250px;
+}
+
 .top-nav li {
     float:right;
     list-style-type:none;
