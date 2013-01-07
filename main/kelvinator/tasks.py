@@ -207,6 +207,25 @@ def put_thumbs(notify_buf, jpeg_dir, prefix, suffix, video_id, store_loc):
     infoLog(notify_buf, "Uploaded: %s files" % str(len(image_list)))
 
 
+@task()
+def duration(video):
+    notify_buf = []
+    (store_path, course_prefix, course_suffix, video_id, video_filename) = splitpath(video.file.name)
+    print store_path
+    print video_filename
+    cmdline = [ 'ffprobe' ]
+    cmdline += \
+        [ '-loglevel', 'error', 
+          '-show_streams', local_storage_root_dir() + "/" + store_path,
+        ]
+    infoLog(notify_buf, "GET DURATION: " + " ".join(cmdline))
+    result = subprocess.Popen(cmdline, stdout = subprocess.PIPE, stderr = subprocess.STDOUT)
+    duration_str = [x for x in result.stdout.readlines() if "duration=" in x][0]
+    infoLog(notify_buf, duration_str)
+    video.duration = int(float(duration_str.split("=")[1]))
+    video.save()
+        
+
 # Main Kelvinator Task (CELERY)
 
 @task()

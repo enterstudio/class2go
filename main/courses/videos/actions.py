@@ -257,11 +257,10 @@ def upload(request):
             new_video.save()
             new_video.file = form.cleaned_data['file']
             new_video.save()
-            new_video.create_ready_instance()
-            #print new_video.file.url
 
-            
-            
+            kelvinator.tasks.duration.delay(new_video)
+
+            new_video.create_ready_instance()
 
             # kick off remote jobs
             kelvinator.tasks.kelvinate.delay(new_video.file.name)
