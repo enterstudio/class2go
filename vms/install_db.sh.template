@@ -12,7 +12,7 @@ else
 fi
 
 cat <<EOF | mysql -u root --password=$DB_PASSWORD
-create database CHARACTER SET utf8 if not exists class2go;  
+create database if not exists class2go default charset utf8 COLLATE utf8_general_ci;
 {{#hosts}}
 grant all on class2go.* to class2go@'{{.}}' identified by 'class2gopw';  
 {{/hosts}}
@@ -23,3 +23,4 @@ flush privileges;
 EOF
 
 sed -i 's/^\(bind-address\)/\# \1/' /etc/mysql/my.cnf 
+service mysql restart

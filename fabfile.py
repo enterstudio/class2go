@@ -3,8 +3,8 @@ import os.path
 import pystache
 
 env.roledefs = {
-    'app': ['10.33.33.34'],
-    'db': ['10.33.33.33']
+    'app': ['10.29.9.3'],
+    'db': ['10.29.9.4']
 }
 
 def _put_parsed_file(template_path, destination, data):
@@ -18,8 +18,8 @@ def _put_parsed_file(template_path, destination, data):
 
 @roles("db")
 def deploy_db():
-    _put_parsed_file("vms/install_db.sh.template", "/tmp/install_db.sh", {'hosts': env.roledefs['db']})
-    sudo("/tmp/install_db.sh")
+    _put_parsed_file("vms/install_db.sh.template", "/tmp/install_db.sh", {'hosts': env.roledefs['app']})
+    sudo("/tmp/install_db.sh", shell=False)
     
 @roles("app")
 def init_db():

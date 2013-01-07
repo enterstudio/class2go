@@ -34,6 +34,8 @@ MAINTENANCE_LANDING_PAGE = False
 #    "stage" or "prod" for something in produciton -- are you sure you want to do that?
 INSTANCE="dev"
 
+LOGGING_DIR = 'django-logs/'
+
 # Put your name and email address here, so Django serious errors can come to you
 # the trailing comma after the list is important so Python correctly interprets 
 # this as a list of lists

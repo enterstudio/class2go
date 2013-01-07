@@ -31,12 +31,12 @@ node["apps"].keys.each do |app|
         action :create
     end
 
-    execute "celery worker local database (#{app})" do
-        cwd node['system']['admin_home'] + "/#{app}/main"
-        user "root"
-        command "./manage.py syncdb --migrate --noinput --database=celery"
-        action :run
-    end
+    # execute "celery worker local database (#{app})" do
+    #     cwd node['system']['admin_home'] + "/#{app}/main"
+    #     user "root"
+    #     command "./manage.py syncdb --migrate --noinput --database=celery"
+    #     action :run
+    # end
 
     file "celery database file permissions (#{app})" do
         path "/opt/#{app}/celery/celerydb.sqlite"
