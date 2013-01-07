@@ -14,6 +14,7 @@ make
 make install
     EOH
   action :run
+  not_if "test -f /usr/lib/apache2/modules/mod_h264_streaming.so"
 end
 
 template "/etc/apache2/sites-available/class2go-file-server" do
