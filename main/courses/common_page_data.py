@@ -3,6 +3,7 @@ from django.contrib.auth.models import User, Group
 import datetime
 import logging
 from database import AWS_STORAGE_BUCKET_NAME
+from c2g.util import is_storage_local
 
 logger=logging.getLogger(__name__)
 
@@ -84,5 +85,6 @@ def get_common_page_data(request, prefix, suffix):
         'current_datetime':current_datetime,
         'effective_current_datetime':effective_current_datetime,
         'aws_storage_bucket_name':AWS_STORAGE_BUCKET_NAME,
+        'is_local_storage':is_storage_local(),
     }
     return page_data

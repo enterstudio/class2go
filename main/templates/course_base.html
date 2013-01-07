@@ -77,8 +77,14 @@
                         <li class="dropdown"{% block course_admin_link %}{% endblock course_admin_link %}>
                             <a href="#" class="dropdown-toggle" data-toggle="dropdown">Course Administration<em class="caret"></em></a>
                             <ul class="dropdown-menu">
-                              <li><a href="{% url 'courses.email_members.views.email_members' common_page_data.course_prefix common_page_data.course_suffix %}">Email Course Members</a></li>
+                              <li><a href="{% url
+                              'courses.email_members.views.email_members'
+                              common_page_data.course_prefix
+                              common_page_data.course_suffix %}">Email
+                              Course Members</a></li>
+			      {% if not common_page_data.is_local_storage %}
                               <li><a href="{% url 'courses.reports.views.main' common_page_data.course_prefix common_page_data.course_suffix %}">Reports</a></li>
+			      {% endif %}
                                 {% if common_page_data.course.share_to.exists %}
                               <li><a href="{% url 'courses.content_sections.views.copy_content_form' common_page_data.course_prefix common_page_data.course_suffix %}">Copy Content To Other Course</a></li>
                                 {% endif %}
