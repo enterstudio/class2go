@@ -303,6 +303,7 @@ def view_submissions_to_grade(request, course_prefix, course_suffix, exam_slug):
         outfile.write(data)
 
     if is_storage_local():
+        outfile.close()
         reports_dir = local_storage_root_dir() + "/" + course_prefix + "/" + course_suffix + "/reports/"
         if not default_storage.exists(reports_dir):
             os.mkdir(reports_dir)
@@ -736,8 +737,9 @@ def view_csv_grades(request, course_prefix, course_suffix, exam_slug):
     could_not_parse = ""
 
     for s in graded_students: #yes, there is sql in a loop here.  We'll optimize later
-        #print(s)
         score_obj = ExamScore.objects.get(course=course, exam=exam, student=s['student'])
+        outstring = '"%s","%s"\n' % (s['student__username'], score_obj.score)
+        outfile.write(outstring)
         subscores = ExamScoreField.objects.filter(parent=score_obj)
         for field in subscores:
             outstring = '"%s","%s","%s"\n' % (s['student__username'], field.field_name, str(field.subscore))
@@ -746,6 +748,7 @@ def view_csv_grades(request, course_prefix, course_suffix, exam_slug):
     outfile.write("\n")
     
     if is_storage_local():
+        outfile.close()
         reports_dir = local_storage_root_dir() + "/" + course_prefix + "/" + course_suffix + "/reports/"
         if not default_storage.exists(reports_dir):
             os.mkdir(reports_dir)
