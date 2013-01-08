@@ -35,6 +35,10 @@ def migrate_db():
 @roles("app")
 def create_tw_institution():
     run("cd ~/class2go/main && python manage.py create_tw_institution")
+
+@roles("app")
+def update_site():
+    run("cd ~/class2go/main && python manage.py update_site " + env.roledefs['app'][0])
     
 @roles("app")
 def create_super_user():
