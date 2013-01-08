@@ -19,6 +19,7 @@ from django.contrib.auth import login as auth_login
 from django.conf import settings
 from c2g.util import upgrade_to_https_and_downgrade_upon_redirect
 from django.views.decorators.debug import sensitive_post_parameters
+from c2g.models import *
 
 import json
 import settings
@@ -45,8 +46,6 @@ def preview(request, course_prefix, course_suffix):
     if not backend.registration_allowed(request):
         return redirect(disallowed_url)
     
-    
-   
     form = form_class(initial={'course_prefix':course_prefix,'course_suffix':course_suffix})
     login_form = AuthenticationForm(request)
     context = RequestContext(request)
@@ -54,12 +53,32 @@ def preview(request, course_prefix, course_suffix):
     class_template='previews/'+request.common_page_data['course'].handle+'.html'
     if os.path.isfile(settings.TEMPLATE_DIRS+'/'+class_template):
         template_name=class_template
-    return render_to_response(template_name,
-                              {'form': form,
-                               'login_form': login_form,
-                              'common_page_data': request.common_page_data,
-                              'display_login': request.GET.__contains__('login')},
-                              context_instance=context)
+        return render_to_response(template_name,
+                                  {'form': form,
+                                   'login_form': login_form,
+                                   'common_page_data': request.common_page_data,
+                                   'display_login': request.GET.__contains__('login')},
+                                  context_instance=context)
+    else:
+        try:
+            common_page_data = get_common_page_data(request, course_prefix, course_suffix)
+            page = AdditionalPage.objects.get(course=common_page_data['course'], slug="overview")
+            return render_to_response("previews/overview.html",
+                                      {'common_page_data': common_page_data,
+                                       'page': page,
+                                       'form': form,
+                                       'login_form': login_form,
+                                       'common_page_data': request.common_page_data,
+                                       'display_login': request.GET.__contains__('login'),
+                                       }, context_instance=context)
+        except Exception, e:
+            print e
+            return render_to_response(template_name,
+                                  {'form': form,
+                                   'login_form': login_form,
+                                   'common_page_data': request.common_page_data,
+                                   'display_login': request.GET.__contains__('login')},
+                                  context_instance=context)
 
 @sensitive_post_parameters()
 @never_cache
