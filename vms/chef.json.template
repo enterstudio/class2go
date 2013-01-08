@@ -16,7 +16,7 @@
         "database_user" :  "class2go",
         "database_password" :  "class2gopw",
 	// # S3
-        "storage_bucket" :  "stage-c2g",
+        "storage_bucket" :  "stage-c2g"
     },
     "email" : {
     	"smtp_host" : "smtp.mailgun.org",
