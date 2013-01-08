@@ -9,6 +9,7 @@ from courses.actions import auth_view_wrapper
 from django.contrib import messages
 from courses.common_page_data import get_common_page_data
 from c2g.models import Course
+from django.conf import settings
 ### C2G Core Views ###
 
 @auth_view_wrapper
@@ -52,7 +53,7 @@ def privacy(request):
     return render_to_response('privacy.html',{},RequestContext(request))
     
 def faq(request):
-    return render_to_response('faq.html',{},context_instance=RequestContext(request))
+    return render_to_response('faq.html',{'adminmail':settings.SERVER_EMAIL},context_instance=RequestContext(request))
 
 def contactus(request):
     if request.GET.get('pre') and request.GET.get('post'):
@@ -71,6 +72,7 @@ def contactus(request):
                               {'request': request,
                                'course': course,
                                'staffmail' : staffmail,
+                               'adminmail' : settings.SERVER_EMAIL,
                               },context_instance=RequestContext(request))
 
 def test_messages(request):

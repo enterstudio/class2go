@@ -40,11 +40,11 @@ LOGGING_DIR = 'django-logs/'
 # the trailing comma after the list is important so Python correctly interprets 
 # this as a list of lists
 ADMINS = (
-        ('Class2Go Dev', "YOURNAME@stanford.edu"),
+        ('Class2Go Dev', "YOURNAME@example.com"),
         )
 
 # EMAIL ERROR PINGS
-ERROR_SNIPPET_EMAILS = ['YOURNAME@stanford.edu',]
+ERROR_SNIPPET_EMAILS = ['YOURNAME@example.com',]
 
 
 # For using S3 Storage, specify these with real settings

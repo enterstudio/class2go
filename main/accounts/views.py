@@ -25,6 +25,7 @@ from django.core.exceptions import ValidationError, MultipleObjectsReturned
 from django.http import HttpResponseBadRequest
 from django.contrib.auth.decorators import permission_required
 from django.db.models import Q
+from django.conf import settings
 import random
 import os
 import string
@@ -71,7 +72,7 @@ def save_edits(request):
         pform.save()
         return HttpResponseRedirect(reverse('accounts.views.profile'))
     
-    return render_to_response('accounts/edit.html', {'request':request, 'uform':uform, 'pform':pform}, context_instance=RequestContext(request))
+    return render_to_response('accounts/edit.html', {'request':request, 'uform':uform, 'pform':pform, 'adminmail' : settings.SERVER_EMAIL}, context_instance=RequestContext(request))
 
 @csrf_protect
 @require_POST
@@ -204,6 +205,6 @@ def shib_login(request):
             messages.add_message(request,messages.SUCCESS, 'You have successfully logged in!')
 
     else:
-        messages.add_message(request,messages.ERROR, 'WebAuth did not return your identity to us!  Please try logging in again.  If the problem continues please contact c2g-techsupport@thoughtworks.com')
+        messages.add_message(request,messages.ERROR, 'WebAuth did not return your identity to us!  Please try logging in again.  If the problem continues please contact ' + settings.SERVER_EMAIL)
 
     return HttpResponseRedirect(redir_to)
