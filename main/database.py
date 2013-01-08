@@ -92,9 +92,10 @@ PIAZZA_ENDPOINT = "https://piazza.com/basic_lti"
 PIAZZA_KEY = "class2go"
 PIAZZA_SECRET = "piazza_xxxxxxx"
 
-# SMTP INFO for SES -- Amazon Simple Email Service $1 per 10K recipients
-SES_SMTP_USER = "USER"
-SES_SMTP_PASSWD = "PWD"
+# SMTP INFO 
+SMTP_HOST = "email-smtp.us-east-1.amazonaws.com"
+SMTP_USER = "USER"
+SMTP_PASSWD = "PWD"
 
 # class2go relies on Youtube pretty heavily. You need to have an API key 
 # with youtube application integration enabled

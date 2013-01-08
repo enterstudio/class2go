@@ -55,8 +55,9 @@ PIAZZA_ENDPOINT = '<%= @node[:piazza][:endpoint] %>'
 PIAZZA_KEY = '<%= @node[:piazza][:key] %>'
 PIAZZA_SECRET = '<%= @node[:piazza][:secret] %>'
 
-SES_SMTP_USER = '<%= @node[:aws][:smtp_user] %>'
-SES_SMTP_PASSWD = '<%= @node[:aws][:smtp_password] %>'
+SMTP_HOST = '<%= @node[:email][:smtp_host] %>'
+SMTP_USER = '<%= @node[:email][:smtp_user] %>'
+SMTP_PASSWD = '<%= @node[:email][:smtp_password] %>'
 
 YT_SERVICE_DEVELOPER_KEY = '<%= @node[:google][:yt_service_developer_key] %>'
 GOOGLE_CLIENT_ID = '<%= @node[:google][:google_client_id] %>' 

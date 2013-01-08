@@ -347,10 +347,10 @@ except NameError:
 if PRODUCTION or EMAIL_ALWAYS_ACTUALLY_SEND:
     DEFAULT_FROM_EMAIL = SERVER_EMAIL #probably change for production
     EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-    EMAIL_HOST = "email-smtp.us-east-1.amazonaws.com"
+    EMAIL_HOST = SMTP_HOST
     EMAIL_PORT = 587
-    EMAIL_HOST_USER = SES_SMTP_USER
-    EMAIL_HOST_PASSWORD = SES_SMTP_PASSWD
+    EMAIL_HOST_USER = SMTP_USER
+    EMAIL_HOST_PASSWORD = SMTP_PASSWD
     EMAIL_USE_TLS = True
 #Otherwise, send email to a file in the logging directory
 else:

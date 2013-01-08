@@ -17,7 +17,9 @@
         "database_password" :  "class2gopw",
 	// # S3
         "storage_bucket" :  "stage-c2g",
-	// # SES
+    },
+    "email" : {
+    	"smtp_host" : "smtp.mailgun.org",
         "smtp_user" :  "{{smtp_user}}",
         "smtp_password" :  "{{smtp_password}}"
     },
