@@ -24,16 +24,11 @@
         <div class="row">
             <div class="span6">
                 <h3>Welcome to ThoughtWorks online classroom! We're ThoughtWorks internal platform, designed to be an open platform for online learning and research.</h3>
-		<p>Coming Winter, 2013, free to the world:
+		<p>Coming Spring, 2013, free to the world:
 		<ul>
-		    <li><a href="{% url 'courses.views.main' 'db' 'Winter2013' %}">Introduction to Databases</a> with Jennifer Widom</li>
+		    <li><a href="{% url 'courses.views.main' 'Test'
+		    Spring2013' %}">Test Course</a> with Liang Huang</li>
 		</ul>
-		</p>
-                <p>Fall 2012, we offered two free courses: 
-                <ul>
-                    <li><a href="{% url 'courses.views.main' 'networking' 'Fall2012' %}">Computer Networking</a> with Nick McKeown &amp; Philip Levis</li> 
-                    <li><a href="{% url 'courses.views.main' 'solar' 'Fall2012' %}">Solar Cells, Fuel Cells, &amp; Batteries</a> with Bruce Clemens</li>
-                </ul>
             </div>
             <div class="span5">
 	      <h4>Here's what you will like about it:</h4>
@@ -47,32 +42,13 @@
 </div>
 <div>
 <br/>
-<h3 style="padding-left:50px;">Winter, 2013</h3>
+<h3 style="padding-left:50px;">Spring, 2013</h3>
 <div class="home-unit">
     <div class="container">
         <div class="row databases">
-            <h3><a href="{% url 'courses.views.main' 'db' 'Winter2013' %}">Introduction to Databases</a></h3>
-            <p><strong>Class begins January 15, 2013</strong></p>
+            <h3><a href="{% url 'courses.views.main' 'Test' 'Spring2013' %}">Test Course</a></h3>
+            <p><strong>Class begins January 7, 2013</strong></p>
 	    <p>This is an introductory course on databases, primarily focusing on how databases and database systems are used in applications. The course will cover relational databases and SQL as well as cover semi-structured and unstructured data using the XML and JSON models. It will cover different ways of designing databases and include such important topics such as; indexes, views, transactions, authorization, integrity, triggers, and online analytical processing (OLAP). Towards the end of the class, Cloud databases and NoSQL systems will also be covered.</p>
-        </div>
-    </div>
-</div>
-<h3 style="padding-left:50px;">Fall, 2012</h3>
-<div class="home-unit">
-    <div class="container">
-        <div class="row computernetworking">
-            <h3><a href="{% url 'courses.views.main' 'networking' 'Fall2012' %}">An Introduction to Computer Networking</a></h3>
-            <p><strong>Class began October 8, 2012</strong></p>
-            <p>This is an introductory course on computer networking, specifically the Internet. It focuses on explaining how the Internet works, ranging from how bits are modulated on wires and in wireless to application-level protocols like BitTorrent and HTTP. It also explains the principles of how to design networks and network protocols. Students gain experience reading and understanding RFCs (Internet protocol specifications) as statements of what a system should do. The course grounds many of the concepts in current practice and recent developments, such as net neutrality and DNS security.</p>
-        </div>
-    </div>
-</div>
-<div class="home-unit">
-    <div class="container">
-        <div class="row solarcells">
-            <h3><a href="{% url 'courses.views.main' 'solar' 'Fall2012' %}">Solar Cells, Fuel Cells &amp; Batteries</a></h3>
-            <p><strong>Class began October 8, 2012</strong></p>
-            <p>This course focuses on the operating principles and applications of emerging technological solutions to the energy demands of the world. We will begin with discussing the scale of global energy usage and requirements for possible solutions. Basic physics and chemistry of solar cells, fuel cells, and batteries will be discussed in quantitative detail. We will explore performance issues, including economics, from the ideal device to the installed system. Finally, we will end with the promise of materials research for providing next generation solutions.</p>
         </div>
     </div>
 </div>
