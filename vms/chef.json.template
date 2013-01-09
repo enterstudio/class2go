@@ -39,7 +39,7 @@
     },
     "apps" :  {
         "class2go" :  {
-	    "servername" :  "https://classroom.thoughtworks.com",
+	    "servername" :  "http://classroom.thoughtworks.com",
 	    "serveralias" :  "*.classroom.thoughtworks.com",
 	    "git_branch" :  "origin/master"
         }

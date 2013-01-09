@@ -40,6 +40,14 @@ execute "a2dissite default" do
   action :run
 end
 
+cookbook_file "/etc/apache2/conf.d/name" do
+  source "name"
+  mode 00644
+  owner "root"
+  group "root"
+  action :create
+end
+
 cookbook_file "/etc/logrotate.d/apache2" do
   source "logrotate-apache2"
   mode 00644
