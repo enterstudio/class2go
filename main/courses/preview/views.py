@@ -101,12 +101,25 @@ def preview_login(request, course_prefix, course_suffix):
     else:
         form = form_class(initial={'course_prefix':course_prefix,'course_suffix':course_suffix})
         context = RequestContext(request)                
-        return render_to_response('previews/'+request.common_page_data['course'].handle+'.html',
-                          {'form': form,
-                          'login_form': login_form,
-                          'common_page_data': request.common_page_data,
-                          'display_login': True},
-                          context_instance=context)
+        class_template='previews/'+request.common_page_data['course'].handle+'.html'
+        if os.path.isfile(settings.TEMPLATE_DIRS+'/'+class_template):
+            return render_to_response(class_template,
+                                      {'form': form,
+                                       'login_form': login_form,
+                                       'common_page_data': request.common_page_data,
+                                       'display_login': True},
+                                      context_instance=context)
+        else:
+            common_page_data = get_common_page_data(request, course_prefix, course_suffix)
+            page = AdditionalPage.objects.get(course=common_page_data['course'], slug="overview")
+            return render_to_response("previews/overview.html",
+                                      {'common_page_data': common_page_data,
+                                       'page': page,
+                                       'form': form,
+                                       'login_form': login_form,
+                                       'common_page_data': request.common_page_data,
+                                       'display_login': request.GET.__contains__('login'),
+                                       }, context_instance=context)
 
 @sensitive_post_parameters()
 @require_POST
@@ -130,10 +143,23 @@ def preview_reg(request, course_prefix, course_suffix):
         return redirect(reverse(redirect_to, args=[course_prefix, course_suffix]))
     else:
         login_form = AuthenticationForm(data=request.POST)
-        context = RequestContext(request)                
-        return render_to_response('previews/'+request.common_page_data['course'].handle+'.html',
+        context = RequestContext(request)  
+        class_template='previews/'+request.common_page_data['course'].handle+'.html'
+        if os.path.isfile(settings.TEMPLATE_DIRS+'/'+class_template):
+            return render_to_response('previews/'+request.common_page_data['course'].handle+'.html',
                                       {'form': form,
-                                      'login_form': login_form,
-                                      'common_page_data': request.common_page_data,
-                                      'display_login': False},
+                                       'login_form': login_form,
+                                       'common_page_data': request.common_page_data,
+                                       'display_login': False},
                                       context_instance=context)
+        else:
+            common_page_data = get_common_page_data(request, course_prefix, course_suffix)
+            page = AdditionalPage.objects.get(course=common_page_data['course'], slug="overview")
+            return render_to_response("previews/overview.html",
+                                      {'common_page_data': common_page_data,
+                                       'page': page,
+                                       'form': form,
+                                       'login_form': login_form,
+                                       'common_page_data': request.common_page_data,
+                                       'display_login': request.GET.__contains__('login'),
+                                       }, context_instance=context)
