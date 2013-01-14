@@ -216,8 +216,11 @@ class OAuthSimple:
                         self._oauthEscape(value)))
                 next
             else:
-                elements.append('%s=%s' % (self._oauthEscape(paramName),
-                    self._oauthEscape(str(paramValue))))
+                v = paramValue
+                if "encode" in dir(v):
+                    v = v.encode('utf-8')
+                elements.append('%s=%s' % (self._oauthEscape(str(v)),
+                    self._oauthEscape(str(v))))
         return '&'.join(elements)
 
     def _generateSignature(self, normParamString):
