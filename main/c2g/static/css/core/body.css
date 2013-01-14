@@ -272,6 +272,10 @@ body.home {
     font-weight:300;
     margin-bottom:0;
 }
+.oosession {
+    background:#fff url(/static/graphics/core/OOSessionLogo.png) no-repeat 40px 0px; 
+    padding:20px 20px 20px 320px;
+}
 .databases {
     background:#fff url(/static/graphics/core/dbLogo.jpg) no-repeat top left; 
     padding:20px 20px 20px 320px;
