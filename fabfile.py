@@ -60,6 +60,7 @@ def _prepare_chef_solo(data):
 def deploy_app(user='vagrant', group='admin', 
                admin_email='admin@example.com', smtp_user='', smtp_password='', server_email='noreply@example.com',
                aws_key='', aws_secret='', 
+               piazza_key='thoughtworks.com', piazza_secret='',
                db_host=env.roledefs['db'][0],
                files_root_url='http://media.server/media/'):
     _install_chef()
@@ -72,6 +73,8 @@ def deploy_app(user='vagrant', group='admin',
         'smtp_password' : smtp_password,
         'aws_key' : aws_key,
         'aws_secret' : aws_secret,
+        'piazza_key' : piazza_key,
+        'piazza_secret' : piazza_secret,
         'db_host' : db_host,
         'files_root_url' : files_root_url
         }

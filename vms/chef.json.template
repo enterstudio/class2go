@@ -51,8 +51,8 @@
     },
     "piazza" :  {
         "endpoint" :  "https://piazza.com/basic_lti",
-        "key" :  "xxxxx",
-        "secret" :  "xxxxx"
+        "key" :  "{{piazza_key}}",
+        "secret" :  "{{piazza_secret}}"
     },
     "google" :  {
         "yt_service_developer_key" :  "xxxxx",
